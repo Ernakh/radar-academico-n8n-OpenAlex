@@ -1,0 +1,251 @@
+{
+  "name": "Radar Acadêmico",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                6
+              ],
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61486bfc-6f66-4e19-91f9-bc98d6d64f31",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const categorias = [\n  {\n    categoria: \"Jogos educacionais, serious games e aprendizagem baseada em jogos\",\n    consulta:\n      '(\"educational game\" OR \"serious game\" OR \"digital learning game\" ' +\n      'OR \"game-based learning\" OR \"jogo educacional\" OR \"jogos educacionais\" ' +\n      'OR \"jogo sério\" OR \"jogos sérios\" OR \"aprendizagem baseada em jogos\") ' +\n      'AND (education OR teaching OR learning OR educação OR ensino OR aprendizagem)',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Gamificação e aprendizagem gameful\",\n    consulta:\n      '(gamification OR \"gameful learning\" OR \"gameful design\" ' +\n      'OR \"gamified learning\" OR gamificação) ' +\n      'AND (education OR teaching OR learning OR educação OR ensino OR aprendizagem)',\n    quantidade: 4\n  },\n\n  {\n    categoria: \"Letramento em jogos e formação de professores\",\n    consulta:\n      '(\"game literacy\" OR \"gaming literacy\" OR \"digital game literacy\" ' +\n      'OR ludoliteracy OR \"ludic literacy\" OR \"games literacy\" ' +\n      'OR \"letramento em jogos\" OR \"letramento de jogos\") ' +\n      'AND (\"teacher education\" OR \"pre-service teacher\" ' +\n      'OR \"preservice teacher\" OR \"teacher training\" ' +\n      'OR \"professional development\" OR \"formação de professores\" ' +\n      'OR \"formação docente\")',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Jogos digitais na formação de professores\",\n    consulta:\n      '(\"digital game\" OR \"educational game\" OR \"serious game\" ' +\n      'OR \"game-based learning\" OR \"digital games in education\" ' +\n      'OR \"jogo digital\" OR \"jogos digitais\") ' +\n      'AND (\"teacher education\" OR \"pre-service teacher\" ' +\n      'OR \"preservice teacher\" OR \"teacher training\" ' +\n      'OR \"teacher professional development\" ' +\n      'OR \"formação de professores\" OR \"formação docente\")',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Jogos digitais como REA e práticas educacionais abertas\",\n    consulta:\n      '(\"open educational resource\" OR OER ' +\n      'OR \"open educational practice\" OR \"open pedagogy\" ' +\n      'OR \"recursos educacionais abertos\" OR REA ' +\n      'OR \"práticas educacionais abertas\") ' +\n      'AND (\"digital game\" OR \"educational game\" OR \"serious game\" ' +\n      'OR gamification OR \"game-based learning\" OR \"jogo digital\")',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Design e desenvolvimento de jogos educacionais\",\n    consulta:\n      '(\"educational game design\" OR \"serious game design\" ' +\n      'OR \"game-based learning design\" OR \"game design framework\" ' +\n      'OR \"educational game development\" OR \"serious game development\" ' +\n      'OR \"design de jogos educacionais\") ' +\n      'AND (education OR learning OR teaching OR pedagogy ' +\n      'OR educação OR aprendizagem OR ensino)',\n    quantidade: 4\n  },\n\n  {\n    categoria: \"Avaliação, usabilidade e acessibilidade em jogos\",\n    consulta:\n      '(\"educational game\" OR \"serious game\" OR \"digital game\" ' +\n      'OR \"game-based learning\") ' +\n      'AND (accessibility OR \"inclusive design\" OR \"universal design\" ' +\n      'OR usability OR evaluation OR assessment OR UX ' +\n      'OR disability OR \"special education\" ' +\n      'OR acessibilidade OR usabilidade OR avaliação ' +\n      'OR inclusão OR deficiência)',\n    quantidade: 4\n  },\n\n  {\n    categoria: \"Inteligência artificial na educação e formação docente\",\n    consulta:\n      '(\"artificial intelligence\" OR \"generative AI\" ' +\n      'OR \"large language model\" OR LLM OR \"AI literacy\" ' +\n      'OR \"inteligência artificial\" OR \"IA generativa\" ' +\n      'OR \"letramento em IA\") ' +\n      'AND (education OR teaching OR learning OR \"teacher education\" ' +\n      'OR \"pre-service teacher\" OR educação OR ensino ' +\n      'OR aprendizagem OR \"formação de professores\")',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Inteligência artificial aplicada a jogos educacionais\",\n    consulta:\n      '(\"artificial intelligence\" OR \"generative AI\" ' +\n      'OR \"machine learning\" OR \"large language model\" ' +\n      'OR \"procedural content generation\") ' +\n      'AND (\"educational game\" OR \"serious game\" ' +\n      'OR \"game-based learning\" OR \"digital learning game\")',\n    quantidade: 4\n  },\n\n  {\n    categoria: \"C-V2X, V2I2P e usuários vulneráveis da via\",\n    consulta:\n      '(\"C-V2X\" OR \"cellular vehicle-to-everything\" OR V2X ' +\n      'OR V2I2P OR \"vehicle-to-pedestrian\" OR V2P) ' +\n      'AND (\"vulnerable road user\" OR VRU OR pedestrian ' +\n      'OR cyclist OR \"urban mobility\" OR \"mobilidade urbana\" ' +\n      'OR pedestre OR ciclista)',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Gêmeos digitais, CARLA e Vehicle-in-the-Loop\",\n    consulta:\n      '(\"digital twin\" OR \"digital twins\" OR \"gêmeo digital\" ' +\n      'OR \"vehicle-in-the-loop\" OR \"hardware-in-the-loop\" ' +\n      'OR \"software-in-the-loop\" OR CARLA) ' +\n      'AND (vehicle OR automotive OR transportation OR traffic ' +\n      'OR \"urban mobility\" OR ADAS OR veículo OR automotivo ' +\n      'OR transporte OR mobilidade)',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"ADAS, AEB e detecção de pedestres\",\n    consulta:\n      '(ADAS OR \"advanced driver assistance system\" ' +\n      'OR AEB OR \"automatic emergency braking\" ' +\n      'OR \"autonomous emergency braking\" OR \"pedestrian detection\") ' +\n      'AND (pedestrian OR \"vulnerable road user\" OR detection ' +\n      'OR avoidance OR collision OR safety OR pedestre ' +\n      'OR detecção OR colisão OR segurança)',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Mobilidade para pessoas com deficiência visual\",\n    consulta:\n      '(\"visual impairment\" OR \"visually impaired\" ' +\n      'OR blindness OR blind OR \"low vision\" ' +\n      'OR \"deficiência visual\" OR cegueira OR \"baixa visão\") ' +\n      'AND (pedestrian OR mobility OR transportation ' +\n      'OR \"urban mobility\" OR \"electric vehicle\" ' +\n      'OR \"vehicle sound\" OR \"spatial audio\" OR accessibility ' +\n      'OR pedestre OR mobilidade OR transporte OR acessibilidade)',\n    quantidade: 5\n  },\n\n  {\n    categoria: \"Veículos elétricos, som e percepção de pedestres\",\n    consulta:\n      '(\"electric vehicle\" OR \"quiet vehicle\" OR \"vehicle sound\" ' +\n      'OR AVAS OR \"acoustic vehicle alerting system\" ' +\n      'OR \"external human-machine interface\" OR eHMI) ' +\n      'AND (pedestrian OR \"vulnerable road user\" ' +\n      'OR \"visual impairment\" OR perception OR safety ' +\n      'OR pedestre OR percepção OR segurança)',\n    quantidade: 4\n  },\n\n  {\n    categoria: \"CAN Bus, telemetria e redes automotivas\",\n    consulta:\n      '(\"CAN bus\" OR \"controller area network\" ' +\n      'OR \"vehicle telemetry\" OR \"automotive ethernet\" ' +\n      'OR \"in-vehicle network\" OR \"automotive network\" ' +\n      'OR \"vehicle diagnostics\") ' +\n      'AND (vehicle OR automotive OR ADAS OR ECU ' +\n      'OR veículo OR automotivo OR telemetria)',\n    quantidade: 3\n  },\n\n  {\n    categoria: \"LiDAR, ROS e navegação autônoma\",\n    consulta:\n      '((LiDAR OR \"point cloud\" OR \"3D point cloud\") ' +\n      'AND (robotics OR \"autonomous navigation\" ' +\n      'OR \"obstacle avoidance\" OR vehicle OR mapping)) ' +\n      'OR (\"Robot Operating System\" ' +\n      'AND (\"obstacle avoidance\" OR navigation ' +\n      'OR robotics OR LiDAR))',\n    quantidade: 3\n  }\n];\n\n// Pesquisamos uma janela de 10 dias para compensar\n// possíveis atrasos de indexação no OpenAlex.\nconst dataFinal = $now\n  .startOf(\"day\")\n  .toISODate();\n\nconst dataInicial = $now\n  .startOf(\"day\")\n  .minus({ days: 10 })\n  .toISODate();\n\nreturn categorias.map(item => ({\n  json: {\n    categoria: item.categoria,\n    consulta: item.consulta,\n    dataInicial,\n    dataFinal,\n\n    // Cada categoria pode definir sua própria quantidade.\n    quantidade: item.quantidade ?? 5\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0f440dd8-6aba-4dcb-b0ef-9b75f85c002a",
+      "name": "Definir assuntos"
+    },
+    {
+      "parameters": {
+        "url": "https://api.openalex.org/works",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "search",
+              "value": "={{ $json.consulta }}"
+            },
+            {
+              "name": "filter",
+              "value": "={{ `from_publication_date:${$json.dataInicial},to_publication_date:${$json.dataFinal},type:article|review,is_retracted:false,has_abstract:true` }}"
+            },
+            {
+              "name": "sort",
+              "value": "=relevance_score:desc"
+            },
+            {
+              "name": "per_page",
+              "value": "50"
+            },
+            {
+              "name": "select",
+              "value": "id,doi,display_name,publication_date,authorships,primary_location,primary_topic,open_access,best_oa_location,cited_by_count,relevance_score,abstract_inverted_index,type"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 5000
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "2ace7ef6-3b0e-4eff-9354-2c7ec75e2a2f",
+      "name": "Buscar OpenAlex",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Hb3nsNJ5mWVQ8VdN",
+          "name": "OpenAlex"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "function reconstruirResumo(indice) {\n  if (!indice) return \"\";\n\n  const palavras = [];\n\n  for (const [palavra, posicoes] of Object.entries(indice)) {\n    for (const posicao of posicoes) {\n      palavras[posicao] = palavra;\n    }\n  }\n\n  return palavras.filter(Boolean).join(\" \");\n}\n\nfunction limpar(texto) {\n  return String(texto || \"\")\n    .replace(/\\s+/g, \" \")\n    .trim();\n}\n\nconst configuracoes = $(\"Definir assuntos\").all();\nconst respostas = $input.all();\nconst saida = [];\n\nfor (let i = 0; i < respostas.length; i++) {\n  const configuracao = configuracoes[i]?.json || {};\n  const resposta = respostas[i]?.json || {};\n\n  // Ignora uma eventual resposta de erro da API.\n  if (resposta.error) {\n    continue;\n  }\n\n  const resultados = resposta.results || [];\n\n  for (const artigo of resultados) {\n    const autores = (artigo.authorships || [])\n      .map(item => item.author?.display_name)\n      .filter(Boolean)\n      .slice(0, 6);\n\n    const resumo = reconstruirResumo(\n      artigo.abstract_inverted_index\n    );\n\n    const link =\n      artigo.doi ||\n      artigo.best_oa_location?.landing_page_url ||\n      artigo.primary_location?.landing_page_url ||\n      artigo.id;\n\n    const identificador = artigo.doi || artigo.id;\n\n    saida.push({\n      json: {\n        chave: `${configuracao.categoria}|${identificador}`,\n\n        id: identificador,\n        categoria: configuracao.categoria,\n        quantidade: configuracao.quantidade,\n        dataInicial: configuracao.dataInicial,\n        dataFinal: configuracao.dataFinal,\n\n        titulo:\n          limpar(artigo.display_name) ||\n          \"Sem título\",\n\n        autores: autores.join(\", \"),\n\n        data: artigo.publication_date,\n\n        revista:\n          artigo.primary_location?.source?.display_name ||\n          \"Periódico não informado\",\n\n        assunto:\n          artigo.primary_topic?.display_name || \"\",\n\n        resumo:\n          limpar(resumo).slice(0, 700),\n\n        link,\n\n        doi: artigo.doi || \"\",\n\n        acessoAberto:\n          artigo.open_access?.is_oa === true,\n\n        citacoes:\n          artigo.cited_by_count || 0,\n\n        relevancia:\n          artigo.relevance_score || 0\n      }\n    });\n  }\n}\n\nreturn saida;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "2fa864ac-fc0a-46c3-9c7c-63d5208a05bc",
+      "name": "Extrair artigos"
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "chave",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "id": "798da46d-da9b-4577-a316-c208134fae33",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "jsCode": "function escapar(texto) {\n  const mapa = {\n    \"&\": \"&amp;\",\n    \"<\": \"&lt;\",\n    \">\": \"&gt;\",\n    '\"': \"&quot;\",\n    \"'\": \"&#039;\"\n  };\n\n  return String(texto || \"\").replace(\n    /[&<>\"']/g,\n    caractere => mapa[caractere]\n  );\n}\n\nfunction formatarData(data) {\n  if (!data) return \"Data não informada\";\n\n  return new Intl.DateTimeFormat(\"pt-BR\").format(\n    new Date(`${data}T12:00:00Z`)\n  );\n}\n\nconst artigos = $input.all().map(item => item.json);\nconst grupos = {};\n\nfor (const artigo of artigos) {\n  if (!grupos[artigo.categoria]) {\n    grupos[artigo.categoria] = [];\n  }\n\n  grupos[artigo.categoria].push(artigo);\n}\n\nlet html = `\n<div style=\"font-family:Arial,sans-serif;max-width:850px;margin:auto;color:#222\">\n  <h1 style=\"color:#174ea6\">Radar acadêmico semanal</h1>\n  <p>\n    Artigos publicados entre\n    <strong>${formatarData(artigos[0]?.dataInicial)}</strong> e\n    <strong>${formatarData(artigos[0]?.dataFinal)}</strong>.\n  </p>\n`;\n\nfor (const [categoria, lista] of Object.entries(grupos)) {\n  const quantidade = Number(lista[0]?.quantidade || 5);\n\n  const selecionados = lista\n    .sort((a, b) =>\n      (b.relevancia - a.relevancia) ||\n      (b.citacoes - a.citacoes) ||\n      String(b.data).localeCompare(String(a.data))\n    )\n    .slice(0, quantidade);\n\n  html += `\n    <h2 style=\"margin-top:32px;border-bottom:2px solid #174ea6\">\n      ${escapar(categoria)}\n    </h2>\n  `;\n\n  for (const artigo of selecionados) {\n    html += `\n      <div style=\"padding:12px 0;border-bottom:1px solid #ddd\">\n        <h3 style=\"margin-bottom:6px\">\n          <a href=\"${escapar(artigo.link)}\">\n            ${escapar(artigo.titulo)}\n          </a>\n        </h3>\n\n        <p style=\"margin:4px 0\">\n          <strong>Autores:</strong>\n          ${escapar(artigo.autores || \"Não informados\")}\n        </p>\n\n        <p style=\"margin:4px 0\">\n          <strong>Periódico:</strong> ${escapar(artigo.revista)} |\n          <strong>Publicação:</strong> ${formatarData(artigo.data)}\n          ${artigo.acessoAberto ? \" | 🟢 Acesso aberto\" : \"\"}\n        </p>\n\n        ${\n          artigo.assunto\n            ? `<p><strong>Assunto:</strong> ${escapar(artigo.assunto)}</p>`\n            : \"\"\n        }\n\n        <p>${escapar(artigo.resumo || \"Resumo não disponibilizado.\")}</p>\n      </div>\n    `;\n  }\n}\n\nhtml += `\n  <p style=\"margin-top:32px;color:#666;font-size:12px\">\n    Relatório automático gerado pelo n8n com dados do OpenAlex.\n  </p>\n</div>\n`;\n\nreturn [{\n  json: {\n    subject: `Radar acadêmico semanal – ${formatarData(\n      artigos[0]?.dataFinal\n    )}`,\n    html\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "4f41dd26-c745-4911-bc6b-22a1b022812a",
+      "name": "Montar Email",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "toRecipients": "fabriciotonettolondero@gmail.com",
+        "subject": "={{ $json.subject }}",
+        "bodyContent": "={{ $json.html }}",
+        "additionalFields": {
+          "bodyContentType": "html"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        0
+      ],
+      "id": "6310b211-8453-41dd-8962-7380da6fbf4f",
+      "name": "Send a message",
+      "webhookId": "19b3f56c-254b-4d98-b94a-7b4d6c27a02a",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "uYfyOKgqg92bXvQP",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Definir assuntos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir assuntos": {
+      "main": [
+        [
+          {
+            "node": "Buscar OpenAlex",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar OpenAlex": {
+      "main": [
+        [
+          {
+            "node": "Extrair artigos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair artigos": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Montar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Email": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4b8c5351-a7fa-44e0-bc86-4cb0e08e88f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "066f7d67356ed7ec10356358300d5f5b190835517675bf31e0f3c8c85788cf5d"
+  },
+  "nodeGroups": [],
+  "id": "1LbjKKUelubyhexg",
+  "tags": []
+}

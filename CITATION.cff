@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "Se você utilizar este software, cite-o conforme os dados abaixo."
+title: "Radar Acadêmico com n8n e OpenAlex"
+abstract: "Fluxo automatizado e auto-hospedado para recuperação, organização e envio periódico de publicações científicas obtidas por meio da API do OpenAlex."
+type: software
+authors:
+
+* family-names: "Londero"
+  given-names: "Fabrício Tonetto"
+  version: 1.0.0
+  date-released: 2026-09-01
+  license: MIT
+  repository-code: "https://github.com/Ernakh/radar-academico-n8n-OpenAlex"
+  url: "https://github.com/Ernakh/radar-academico-n8n-OpenAlex"
+  keywords:
+* "n8n"
+* "OpenAlex"
+* "workflow automation"
+* "information retrieval"
+* "scientific literature"
+* "open science"
