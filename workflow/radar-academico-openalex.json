@@ -111,7 +111,7 @@
     {
       "parameters": {
         "operation": "removeItemsSeenInPreviousExecutions",
-        "dedupeValue": "chave",
+        "dedupeValue": "={{ $json.chave }}",
         "options": {}
       },
       "type": "n8n-nodes-base.removeDuplicates",
